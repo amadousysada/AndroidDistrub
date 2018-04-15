@@ -5,21 +5,23 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenCentral()
         mavenLocal()
         mavenCentral()
         maven {
-            url 'https://repo.zeroc.com/nexus/content/repositories/releases'
+            url "https://plugins.gradle.org/m2/"
         }
+
 
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "gradle.plugin.com.zeroc.gradle.ice-builder:slice:1.4.5"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
-
+apply plugin: 'java'
+apply plugin: "com.zeroc.gradle.ice-builder.slice"
 allprojects {
     repositories {
         google()
@@ -28,6 +30,3 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}

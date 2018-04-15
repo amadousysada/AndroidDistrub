@@ -1,6 +1,7 @@
 package com.example.sy.myapplication;
 
 
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.speech.RecognizerIntent;
@@ -8,7 +9,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,23 +21,19 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.ksoap2.serialization.AttributeInfo;
-import org.ksoap2.serialization.PropertyInfo;
+import com.example.sy.myapplication.PlayerMp3.PlayerPrx;
+import com.zeroc.Ice.Communicator;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.SoapEnvelope;
 
 import org.ksoap2.transport.HttpTransportSE;
+import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaPlayer;
+import org.videolan.libvlc.LibVLC;
+
 
 /**
  * A login screen that offers login via email/password.
@@ -46,29 +45,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
-
-
     private static final String METHOD_NAME = "requete";
     private static final String NAMESPACE = "http://localhost:10048";
     private static final String URL = "http://192.168.1.2:10080/WSAR/Analyseur";
     private static final String SOAP_ACTION = "http://192.168.1.2:10080/requete";
-    private List<String> reponse= null;
+    private static ListView lv;
+    private String [] reponse= null;
     private String requete;
     private TextView t;
+    private Communicator ic=null;
+    private LibVLC mlibvlc;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mlibvlc= new LibVLC(this);
         // Set up the login form.
         t= findViewById(R.id.moi93);
-        t.setText("salut les nuls");
-        ImageButton micro = (ImageButton) findViewById(R.id.mSpeakBtn);
-        micro.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startVoiceInput();
-            }
+
+        t.setText("Veillez cliquez sur le microphone ");
+        ImageButton micro = findViewById(R.id.mSpeakBtn);
+        micro.setOnClickListener((View v) -> {
+            startVoiceInput();
         });
+        
+        
     }
 
     private void startVoiceInput() {
@@ -79,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
-
+            a.printStackTrace();
         }
     }
 
@@ -103,31 +106,52 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void analyser(){
         new Mytask().execute();
     }
-    class Mytask extends AsyncTask<Void, Void, List<String>> {
+    class Mytask extends AsyncTask<Void, Void, String[]> {
 
         @Override
-        protected List<String> doInBackground(Void... voids) {
+        protected String[] doInBackground(Void... voids) {
             return callWebService();
             //return null;
         }
 
         @Override
-        protected void onPostExecute(List<String> l) {
+        protected void onPostExecute(String[] l) {
             super.onPostExecute(l);
             if(l !=null){
-                t.setText("Action :"+l.get(0)+"\n"+"Objet :"+l.get(1)+"\n");
+                //String o=(l[1]!=null)?l[1]:"null";
+                //t.setText("Action :"+l[0]+"\n"+"Objet :"+o+"\n");
                 Toast.makeText(LoginActivity.this,"SUPER",Toast.LENGTH_LONG).show();
+                try {
+					ic = com.zeroc.Ice.Util.initialize();
+					com.zeroc.Ice.ObjectPrx base = ic.stringToProxy("PlayerMp3:default -h 192.168.1.2 -p 10000");
+					PlayerPrx remotePlayer = PlayerPrx.checkedCast(base);
+					if (remotePlayer == null)
+						throw new Error("Invalid proxy");
+					remotePlayer.MafactoryMethode(l);
+
+					Media media= new Media(mlibvlc,Uri.parse("rtp://192.168.1.255:5004"));
+
+					MediaPlayer m=new MediaPlayer(mlibvlc);
+					m.setMedia(media);
+					m.play();
+
+
+
+				} catch (com.zeroc.Ice.LocalException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
             }
             else{
-                Toast.makeText(LoginActivity.this,"NOTHING BUT TROUBLE",Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"AUCUNE REPONSE",Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    public List<String>  callWebService(){
+    public String[]  callWebService(){
 
 
-        String result = "0";
         SoapObject request = new SoapObject(NAMESPACE,METHOD_NAME);
 
         HttpTransportSE androidHttpTransport = new HttpTransportSE(URL,30000);
@@ -142,13 +166,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             androidHttpTransport.call(SOAP_ACTION, envelope);
 
             SoapObject resu= (SoapObject)envelope.bodyIn;
+            reponse= new String[resu.getPropertyCount()];
+            for(int i=0;i<resu.getPropertyCount();i++){
 
-            Object resul1= resu.getProperty(0);
-            Object resul2= resu.getProperty(1);
-            reponse= new ArrayList<String>();
-            reponse.add(resul1.toString());
-            reponse.add(resul2.toString());
-            System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRR"+reponse);
+                reponse[i]=resu.getProperty(i).toString();
+            }
+
+            System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRR   "+reponse);
         }
         catch (Exception e){
             e.printStackTrace();
