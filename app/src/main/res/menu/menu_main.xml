@@ -1,0 +1,17 @@
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/media_route_menu_item"
+        android:title="Cast"
+        app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
+        app:showAsAction="always"
+        tools:icon="@drawable/mr_button_light" />
+
+    <item
+        android:id="@+id/mSpeakBtn"
+        android:icon="@drawable/ic_microphone_2"
+        app:showAsAction="ifRoom|withText"
+        android:title="Micro">
+    </item>
+</menu>

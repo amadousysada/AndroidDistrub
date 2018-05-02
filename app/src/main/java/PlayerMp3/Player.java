@@ -18,7 +18,7 @@
 // </auto-generated>
 //
 
-package com.example.sy.myapplication.PlayerMp3;
+package PlayerMp3;
 
 public interface Player extends com.zeroc.Ice.Object
 {
@@ -30,13 +30,17 @@ public interface Player extends com.zeroc.Ice.Object
 
     Son[] getSons(com.zeroc.Ice.Current current);
 
-    void MafactoryMethode(String[] s, com.zeroc.Ice.Current current);
+    String MafactoryMethode(String[] s, com.zeroc.Ice.Current current);
+
+    Son getCurrentSon(com.zeroc.Ice.Current current);
 
     boolean play(String name, com.zeroc.Ice.Current current);
 
     void stop(com.zeroc.Ice.Current current);
 
     void pause(com.zeroc.Ice.Current current);
+
+    String reprendre(com.zeroc.Ice.Current current);
 
     static final String[] _iceIds =
     {
@@ -131,8 +135,23 @@ public interface Player extends com.zeroc.Ice.Object
         String[] iceP_s;
         iceP_s = istr.readStringSeq();
         inS.endReadParams();
-        obj.MafactoryMethode(iceP_s, current);
-        return inS.setResult(inS.writeEmptyParams());
+        String ret = obj.MafactoryMethode(iceP_s, current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeString(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_getCurrentSon(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        Son ret = obj.getCurrentSon(current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeValue(ret);
+        ostr.writePendingValues();
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
     }
 
     static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_play(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
@@ -165,11 +184,23 @@ public interface Player extends com.zeroc.Ice.Object
         return inS.setResult(inS.writeEmptyParams());
     }
 
+    static java.util.concurrent.CompletionStage<com.zeroc.Ice.OutputStream> _iceD_reprendre(Player obj, final com.zeroc.IceInternal.Incoming inS, com.zeroc.Ice.Current current)
+    {
+        com.zeroc.Ice.Object._iceCheckMode(null, current.mode);
+        inS.readEmptyParams();
+        String ret = obj.reprendre(current);
+        com.zeroc.Ice.OutputStream ostr = inS.startWriteParams();
+        ostr.writeString(ret);
+        inS.endWriteParams(ostr);
+        return inS.setResult(ostr);
+    }
+
     final static String[] _iceOps =
     {
         "MafactoryMethode",
         "addSon",
         "deleteSon",
+        "getCurrentSon",
         "getSons",
         "ice_id",
         "ice_ids",
@@ -177,6 +208,7 @@ public interface Player extends com.zeroc.Ice.Object
         "ice_ping",
         "pause",
         "play",
+        "reprendre",
         "searchSon",
         "stop"
     };
@@ -207,37 +239,45 @@ public interface Player extends com.zeroc.Ice.Object
             }
             case 3:
             {
-                return _iceD_getSons(this, in, current);
+                return _iceD_getCurrentSon(this, in, current);
             }
             case 4:
             {
-                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
+                return _iceD_getSons(this, in, current);
             }
             case 5:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_id(this, in, current);
             }
             case 6:
             {
-                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ids(this, in, current);
             }
             case 7:
             {
-                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_isA(this, in, current);
             }
             case 8:
             {
-                return _iceD_pause(this, in, current);
+                return com.zeroc.Ice.Object._iceD_ice_ping(this, in, current);
             }
             case 9:
             {
-                return _iceD_play(this, in, current);
+                return _iceD_pause(this, in, current);
             }
             case 10:
             {
-                return _iceD_searchSon(this, in, current);
+                return _iceD_play(this, in, current);
             }
             case 11:
+            {
+                return _iceD_reprendre(this, in, current);
+            }
+            case 12:
+            {
+                return _iceD_searchSon(this, in, current);
+            }
+            case 13:
             {
                 return _iceD_stop(this, in, current);
             }

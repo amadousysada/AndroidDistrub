@@ -18,7 +18,7 @@
 // </auto-generated>
 //
 
-package com.example.sy.myapplication.PlayerMp3;
+package PlayerMp3;
 
 public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
 {
@@ -158,32 +158,68 @@ public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default void MafactoryMethode(String[] s)
+    default String MafactoryMethode(String[] s)
     {
-        MafactoryMethode(s, com.zeroc.Ice.ObjectPrx.noExplicitContext);
+        return MafactoryMethode(s, com.zeroc.Ice.ObjectPrx.noExplicitContext);
     }
 
-    default void MafactoryMethode(String[] s, java.util.Map<String, String> context)
+    default String MafactoryMethode(String[] s, java.util.Map<String, String> context)
     {
-        _iceI_MafactoryMethodeAsync(s, context, true).waitForResponse();
+        return _iceI_MafactoryMethodeAsync(s, context, true).waitForResponse();
     }
 
-    default java.util.concurrent.CompletableFuture<Void> MafactoryMethodeAsync(String[] s)
+    default java.util.concurrent.CompletableFuture<java.lang.String> MafactoryMethodeAsync(String[] s)
     {
         return _iceI_MafactoryMethodeAsync(s, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
     }
 
-    default java.util.concurrent.CompletableFuture<Void> MafactoryMethodeAsync(String[] s, java.util.Map<String, String> context)
+    default java.util.concurrent.CompletableFuture<java.lang.String> MafactoryMethodeAsync(String[] s, java.util.Map<String, String> context)
     {
         return _iceI_MafactoryMethodeAsync(s, context, false);
     }
 
-    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_MafactoryMethodeAsync(String[] iceP_s, java.util.Map<String, String> context, boolean sync)
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.String> _iceI_MafactoryMethodeAsync(String[] iceP_s, java.util.Map<String, String> context, boolean sync)
     {
-        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "MafactoryMethode", null, sync, null);
-        f.invoke(false, context, null, ostr -> {
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "MafactoryMethode", null, sync, null);
+        f.invoke(true, context, null, ostr -> {
                      ostr.writeStringSeq(iceP_s);
-                 }, null);
+                 }, istr -> {
+                     String ret;
+                     ret = istr.readString();
+                     return ret;
+                 });
+        return f;
+    }
+
+    default Son getCurrentSon()
+    {
+        return getCurrentSon(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default Son getCurrentSon(java.util.Map<String, String> context)
+    {
+        return _iceI_getCurrentSonAsync(context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<Son> getCurrentSonAsync()
+    {
+        return _iceI_getCurrentSonAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<Son> getCurrentSonAsync(java.util.Map<String, String> context)
+    {
+        return _iceI_getCurrentSonAsync(context, false);
+    }
+
+    default com.zeroc.IceInternal.OutgoingAsync<Son> _iceI_getCurrentSonAsync(java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<Son> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "getCurrentSon", null, sync, null);
+        f.invoke(true, context, null, null, istr -> {
+                     final com.zeroc.IceInternal.Holder<Son> ret = new com.zeroc.IceInternal.Holder<>();
+                     istr.readValue(v -> ret.value = v, Son.class);
+                     istr.readPendingValues();
+                     return ret.value;
+                 });
         return f;
     }
 
@@ -271,6 +307,37 @@ public interface PlayerPrx extends com.zeroc.Ice.ObjectPrx
     {
         com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "pause", null, sync, null);
         f.invoke(false, context, null, null, null);
+        return f;
+    }
+
+    default String reprendre()
+    {
+        return reprendre(com.zeroc.Ice.ObjectPrx.noExplicitContext);
+    }
+
+    default String reprendre(java.util.Map<String, String> context)
+    {
+        return _iceI_reprendreAsync(context, true).waitForResponse();
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.String> reprendreAsync()
+    {
+        return _iceI_reprendreAsync(com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
+    }
+
+    default java.util.concurrent.CompletableFuture<java.lang.String> reprendreAsync(java.util.Map<String, String> context)
+    {
+        return _iceI_reprendreAsync(context, false);
+    }
+
+    default com.zeroc.IceInternal.OutgoingAsync<java.lang.String> _iceI_reprendreAsync(java.util.Map<String, String> context, boolean sync)
+    {
+        com.zeroc.IceInternal.OutgoingAsync<java.lang.String> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "reprendre", null, sync, null);
+        f.invoke(true, context, null, null, istr -> {
+                     String ret;
+                     ret = istr.readString();
+                     return ret;
+                 });
         return f;
     }
 

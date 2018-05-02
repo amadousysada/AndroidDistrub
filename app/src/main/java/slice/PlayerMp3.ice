@@ -18,10 +18,12 @@ module PlayerMp3 {
     bool deleteSon(string name);
     Son searchSon(string name);
     SonList getSons();
-    void MafactoryMethode(StringSeq s );
+    string MafactoryMethode(StringSeq s );
+    Son getCurrentSon();
     bool play(string name);
     void stop();
     void pause();
+    string reprendre();
    };
 
 };

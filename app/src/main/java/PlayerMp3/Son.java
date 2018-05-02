@@ -18,7 +18,7 @@
 // </auto-generated>
 //
 
-package com.example.sy.myapplication.PlayerMp3;
+package PlayerMp3;
 
 public class Son extends com.zeroc.Ice.Value
 {
