@@ -20,6 +20,7 @@ import PlayerMp3.Son;
  * Created by sy on 27/04/18.
  */
 
+// cette classe correspond a notre Onglet de Musique , c'est la ou s'affiche notre player .
 public class TabPlay extends Fragment implements SeekBar.OnSeekBarChangeListener{
 
     private ImageButton btnPlay;
@@ -42,7 +43,7 @@ public class TabPlay extends Fragment implements SeekBar.OnSeekBarChangeListener
         init(rootView);
         return rootView;
     }
-
+    // methode pour initialiser nos composants(boutton,TextView etc....).
     public void init(View v){
         btnPlay = (ImageButton) v.findViewById(R.id.btnPlay);
         btnForward = (ImageButton) v.findViewById(R.id.btnForward);
@@ -51,41 +52,30 @@ public class TabPlay extends Fragment implements SeekBar.OnSeekBarChangeListener
         btnPrevious = (ImageButton) v.findViewById(R.id.btnPrevious);
         songProgressBar = (SeekBar) v.findViewById(R.id.songProgressBar);
         songTitleLabel = (TextView) v.findViewById(R.id.songTitle);
-        songProgressBar.setOnSeekBarChangeListener(this); // Important
+        songProgressBar.setOnSeekBarChangeListener(this);
         songCurrentDurationLabel = (TextView) v.findViewById(R.id.songCurrentDurationLabel);
         songProgressBar.setProgress(0);
         songProgressBar.setMax(180);
-
+        // mis a jour de notre progressBar.
         updateProgressBar();
     }
 
     /**
-     * Update timer on seekbar
+     * Cette fonction met a jour notre progressBar.
      * */
     public void updateProgressBar() {
-        mHandler.postDelayed(mUpdateTimeTask, 100);
+        // chaque 1000 ms notre handler appel le Runnable quimet a jour notre progressBar.
+        mHandler.postDelayed(mUpdateTimeTask, 1000);
     }
 
     /**
-     * Background Runnable thread
+     * Ici se trouve notre Runnable qui met a jour notre progressBar et notre player en general.
      * */
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-            //long currentDuration = 2015;
-
-            // Displaying Total Duration time
-
-            // Displaying time completed playing
-
-
-            // Updating progress bar
-            //int currentSeconds = (int) (currentDuration / 1000);
-            //int totalSeconds = (int) (240000 / 1000);
-
-            // calculating percentage
-            //int progress = (((int)currentSeconds)/totalSeconds)*100;
-            //Log.d("Progress", ""+progress);
+            // on recupere le status de notre player, grace a notre static methode defini sur notre class MainActivity.
             String status=MainActivity.getStatus();
+            // on fait un switch sur le status recupere , puis on fait l'action necessaire selon le cas.
             switch (status){
                 case "stop":
                     songTitleLabel.setText("");
@@ -117,7 +107,7 @@ public class TabPlay extends Fragment implements SeekBar.OnSeekBarChangeListener
                     break;
             }
 
-            // Running this thread after 100 milliseconds
+            // Repeter le processus chanque 1000 ms(1 s).
             mHandler.postDelayed(this, 1000);
         }
     };
@@ -149,22 +139,22 @@ public class TabPlay extends Fragment implements SeekBar.OnSeekBarChangeListener
         // update timer progress again
         updateProgressBar();
     }
-
+    // cette methode converti le temps sous le format "hh:mn:ss:ms"
     public String milliSecondsToTimer(long milliseconds){
         String finalTimerString = "";
         String secondsString = "";
 
-        // Convert total duration into time
+
         int hours = (int)( milliseconds / (60*60));
         int minutes = (int)(milliseconds / (60));
         int seconds = (int)(milliseconds % (60));
-        // Add hours if there
+        // si l'heure est >0 on l'affiche dans notre player.
         if(hours > 0){
             finalTimerString = hours + ":";
 
         }
 
-        // Prepending 0 to seconds if it is one digit
+        // si les seconds son inferieurs a 10 on  y ajoute un zero avant.
         if(seconds < 10){
             secondsString = "0" + seconds;
         }else{
@@ -172,7 +162,6 @@ public class TabPlay extends Fragment implements SeekBar.OnSeekBarChangeListener
 
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 
-        // return timer string
         return finalTimerString;
     }
 }

@@ -12,7 +12,7 @@ import com.example.sy.myapplication.R;
 /**
  * Created by sy on 27/04/18.
  */
-
+// l'onglet About de notre application.
 public class TabAbout extends Fragment {
 
     @Override

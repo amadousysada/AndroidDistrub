@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by sy on 27/04/18.
  */
-
+ // l'onglet Home de Notre application. c'est ici que s'affiche toutes les musiques disponibles.
 public class TabHome extends Fragment {
 
     private ArrayList<Son> dataModels;
@@ -33,26 +33,13 @@ public class TabHome extends Fragment {
         populateliste(rootView);
         return rootView;
     }
+    // cette methode rempli notre liste.
     public void populateliste(View v){
         listView=v.findViewById(R.id.mylist);
 
 
         dataModels= new ArrayList<>();
         dataModels=MainActivity.getSons();
-        /*dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-        dataModels.add(new Son("Abc","Alpha","Alpha","2.0","hdhdndjj"));
-*/
         adapter= new ListAdapter(dataModels,getContext());
 
         listView.setAdapter(adapter);
@@ -62,7 +49,7 @@ public class TabHome extends Fragment {
 
                 Son dataModel= dataModels.get(position);
 
-
+                // le bloc suivant affiche les details d'une musique donnee en forme de snackbar android.
                 Snackbar snackbar =  Snackbar.make(v, "Titre: " +dataModel.name+"\n"+"Artiste : "+dataModel.singer+"\n"+"Album : "+dataModel.album+"\n"+"Chemin : "+dataModel.path, Snackbar.LENGTH_LONG);
                 View snackbarView = snackbar.getView();
 
@@ -71,11 +58,6 @@ public class TabHome extends Fragment {
                 tv.setMaxLines(4);
                 snackbar.show();
 
-
-
-                        //.setAction("No action", null).show();
-                //Snackbar.make(view, dataModel.name+"\n"+dataModel.author+" API: "+dataModel.singer, Snackbar.LENGTH_LONG)
-                       // .setAction("No action", null).show();
             }
         });
     }

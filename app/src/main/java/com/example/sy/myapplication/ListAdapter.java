@@ -22,6 +22,8 @@ import java.util.ArrayList;
  * Created by sy on 28/04/18.
  */
 
+
+/*cette classe est un adapter pour la list view de musiques affichee au dans l'onglet accueil de mon application*/
 public class ListAdapter extends ArrayAdapter<Son> implements View.OnClickListener{
 
     private ArrayList<Son> dataSet;
@@ -75,13 +77,13 @@ public class ListAdapter extends ArrayAdapter<Son> implements View.OnClickListen
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
+        // pour une position donnee on recupere le son qui y est associe
         Son dataModel = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
+
+        ViewHolder viewHolder;
 
         final View result;
-
+        // on verifie si le view existe en cache on le retourne sinon on fait une inflate
         if (convertView == null) {
 
 
@@ -113,7 +115,6 @@ public class ListAdapter extends ArrayAdapter<Son> implements View.OnClickListen
 
         viewHolder.info.setOnClickListener(this);
         viewHolder.info.setTag(position);
-        // Return the completed view to render on screen
         return convertView;
     }
 }
